@@ -1,5 +1,6 @@
 local brightness = loadrc("brightness", "proxygin/brightness")
 local volume     = loadrc("volume", "proxygin/volume")
+local pulse      = loadrc("pulse", "proxygin/pulse")
 local keydoc     = loadrc("keydoc", "proxygin/keydoc")
 local tools      = loadrc("tools", "proxygin/tools")
 local helpers    = loadrc("helpers", "proxygin/helpers")
@@ -31,12 +32,12 @@ config.keys.global = awful.util.table.join(
 
   awful.key({ modkey , "Shift"   } , "h"     , 
         function(c)
-              local screen = awful.screen.focused()
+              --local screen = awful.screen.focused()
               awful.client.swap.global_bydirection('left')
-	      print("form screen " .. screen)
-	      print("on screen " .. awful.screen.focused())
+	      --print("form screen " .. screen)
+	      --print("on screen " .. awful.screen.focused())
 	      --print("c index " .. awful.client.focus)
-	      print("client.swap.global_bydirection(left)")
+	      --print("client.swap.global_bydirection(left)")
         end, "Swap with left window")        ,
   awful.key({ modkey , "Shift"   } , "s"     , 
         function(c)
@@ -62,9 +63,6 @@ config.keys.global = awful.util.table.join(
   awful.key({ }, "#233", function () awful.util.spawn("setbrightness +") end),
   awful.key({ }, "#237", function () awful.util.spawn("backlight -") end),
   awful.key({ }, "#238", function () awful.util.spawn("backlight +") end),
-  --awful.key({ }, "#121", function () awful.util.spawn("pavol mute") end),
-  --awful.key({ }, "#122", function () awful.util.spawn("pavol -") end),
-  --awful.key({ }, "#123", function () awful.util.spawn("pavol +") end),
   awful.key({ }, "#212", function () awful.util.spawn(os.getenv("HOME") .. "/scritps/toggle-touchpad") end),
   awful.key({ }, "#173", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/spotify-control.sh previous") end),
   awful.key({ }, "#171", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/spotify-control.sh next") end),
@@ -72,9 +70,9 @@ config.keys.global = awful.util.table.join(
   awful.key({ }, "#128", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/cycle-keymaps.sh") end),
   awful.key({ } , "XF86MonBrightnessUp"   , brightness.increase) ,
   awful.key({ } , "XF86MonBrightnessDown" , brightness.decrease) ,
-  awful.key({ } , "XF86AudioRaiseVolume"  , volume.increase)     ,
-  awful.key({ } , "XF86AudioLowerVolume"  , volume.decrease)     ,
-  awful.key({ } , "XF86AudioMute"         , volume.toggle)       ,
+  awful.key({ } , "XF86AudioRaiseVolume"  , pulse.increase)   ,
+  awful.key({ } , "XF86AudioLowerVolume"  , pulse.decrease)   ,
+  awful.key({ } , "XF86AudioMute"         , pulse.mute)       ,
   awful.key({ modkey,           }, "u",
     function () 
       sinks = {}
