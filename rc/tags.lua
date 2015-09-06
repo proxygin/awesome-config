@@ -47,6 +47,9 @@ for i = 1, 9 do
 
     awful.key({ modkey, "Shift" }, i,
       function ()
+	if not client.focus then
+		return
+	end
         local tag = awful.tag.gettags(client.focus.screen)[i]
         if client.focus and tag then
           awful.client.movetotag(tag)

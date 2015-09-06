@@ -1,4 +1,5 @@
 local awful    = require("awful")
+local beautiful = require("beautiful")
 local naughty  = require("naughty")
 local tonumber = tonumber
 local string   = string
@@ -7,11 +8,14 @@ local icons    = loadrc("icons", "proxygin/icons")
 local wibox    = require("wibox")
 local io       = require("io")
 local math     = require("math")
+local scratch  = require("scratch")
 
 module("proxygin/pulse")
 
 local lastid  = nil
 local _widget = wibox.widget.imagebox()
+local _comb_widget = wibox.layout.fixed.horizontal()
+local _widget_icon = wibox.widget.imagebox()
 local inc = nil
 
 
@@ -24,13 +28,16 @@ local function change_volume(arg)
   local list_sinks = f:read("*a") 
   f:close() 
   
+  -- Break down volume into into %. inc = 1%
   if not inc then
     for i in list_sinks:gmatch("volume steps: (%d+)",1) do
     	inc = math.floor((tonumber(i)/100))
+	break
     end
   end
   
-  local i = 0 
+  -- iter over sinks and set the volume 
+  local sink_no = 0 
   local percent = 0
   for vol in list_sinks:gmatch("volume: front%-left: (%d+)") do 
     vol = tonumber(vol) + (inc*arg)
@@ -40,9 +47,32 @@ local function change_volume(arg)
        
     percent = math.floor(vol/inc)
 
-    local f = io.popen("pacmd set-sink-volume  " .. i .. " " .. vol )
-    local f = io.popen("pacmd set-sink-mute " .. i .. " false")
-    i = i + 1 
+    local f = io.popen("pacmd set-sink-volume  " .. sink_no .. " " .. vol )
+    local f = io.popen("pacmd set-sink-mute " .. sink_no .. " false")
+    sink_no = sink_no + 1 
+  end 
+
+  update()
+end
+
+function update()
+  local f = io.popen("pacmd" .. " list-sinks") 
+  if f == nill then 
+    return false 
+  end 
+  
+  local list_sinks = f:read("*a") 
+  f:close() 
+  
+  -- iter over sinks and set the volume 
+  local sink_no = 0 
+  local percent = 0
+  for default_sink_prop in list_sinks:gmatch("%* index: %d.*",1) do 
+    for default_percent in default_sink_prop:gmatch("volume: front%-left: %d+ / +(%d+)") do 
+      percent  = tonumber(default_percent)
+      break
+    end
+    break
   end 
 
   local icon = "high"
@@ -85,16 +115,18 @@ function mute()
 end
 
 function mixer()
-  awful.util.spawn(config.term_cmd .. "alsamixer", false)
+  scratch.drop("pavucontrol", "top")
 end
 
 
 function widget()
+  _widget_icon:set_image(beautiful.icons .. "/widgets/myclocknew.png")
   _widget:buttons(awful.util.table.join(
     awful.button({ }, 3, mixer),
-    awful.button({ }, 1, mute),
+    awful.button({ }, 1, mixer),
     awful.button({ }, 4, increase),
     awful.button({ }, 5, decrease)
   ))
+  update()
   return _widget
 end

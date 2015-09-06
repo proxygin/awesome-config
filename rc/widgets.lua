@@ -1,11 +1,11 @@
 local wibox   = require("wibox")
 local vicious = require("vicious")
 local keydoc  = loadrc("keydoc", "proxygin/keydoc")
-local volume  = loadrc("volume", "proxygin/volume")
 local clock   = loadrc("calendar", "proxygin/calendar")
 local memory  = loadrc("memory", "proxygin/memory")
 local battery = loadrc("battery", "proxygin/battery")
 local helpers = loadrc("helpers", "proxygin/helpers")
+local pulse   = loadrc("pulse", "proxygin/pulse")
 
 -- Separators
 local sepopen = wibox.widget.imagebox()
@@ -74,7 +74,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(volume.widget())
+    right_layout:add(pulse.widget())
     right_layout:add(battery.widget())
     right_layout:add(memory.widget())
     right_layout:add(clock.widget())

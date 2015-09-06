@@ -1,5 +1,6 @@
 -- Handle volume (through pulseaudio)
 
+local io       = require("io")
 local awful    = require("awful")
 local naughty  = require("naughty")
 local tonumber = tonumber
@@ -13,6 +14,40 @@ module("proxygin/volume")
 local lastid  = nil
 local channel = "Master"
 local _widget = wibox.widget.imagebox()
+
+local function pulse(args)
+  local f = io.popen("pacmd" .. " list-sinks")
+  if f  == nill then
+    return false
+  end
+
+  local list_sinks = f:read("*a")
+  f:close()
+
+  for sink in list_sinks:gmatch("volume: front-left: (%d+)") do
+    lastid = naughty.notify({ text = "test", icon = icon, font = "Ubuntu Bold 14", replaces_id = lastid }).id
+  end
+  local _, count = string.gsub(list_sinks, "index: (%d)", "%1")
+
+  --vol = tonumber(vol) + ((65537/100)*5)
+  for i = 0, count-1 do
+    -- apply 'whatever' to each index
+    local f = io.popen("pacmd set-sink-volume "  .. i .. " " .. 14418)
+    if f  == nill then
+      lastid = naughty.notify({ text = "det gik galt...",
+      icon = icon,
+      font = "Ubuntu Bold 14",
+      replaces_id = lastid }).id
+      return false
+    end
+    f:close()
+  end
+
+  lastid = naughty.notify({ text = vols,
+  icon = icon,
+  font = "Ubuntu Bold 14",
+  replaces_id = lastid }).id
+end
 
 local function amixer(args)
   local out = awful.util.pread("amixer " .. args)
@@ -38,15 +73,16 @@ local function amixer(args)
 end
 
 function increase()
-  amixer("sset " .. channel .. " 5%+")
+  --awful.util.spawn("pavol +")
+  pulse("test")
 end
 
 function decrease()
-  amixer("sset " .. channel .. " 5%-")
+  awful.util.spawn("pavol -")
 end
 
 function toggle()
-  amixer("sset " .. channel .. " toggle")
+  awful.util.spawn("pavol mute")
 end
 
 function update()

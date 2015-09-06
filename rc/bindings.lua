@@ -1,9 +1,9 @@
 local brightness = loadrc("brightness", "proxygin/brightness")
-local volume     = loadrc("volume", "proxygin/volume")
 local pulse      = loadrc("pulse", "proxygin/pulse")
 local keydoc     = loadrc("keydoc", "proxygin/keydoc")
 local tools      = loadrc("tools", "proxygin/tools")
 local helpers    = loadrc("helpers", "proxygin/helpers")
+local scratch    = require("scratch")
 
 config.keys.global = awful.util.table.join(
 
@@ -25,25 +25,12 @@ config.keys.global = awful.util.table.join(
 
   keydoc.group("Layout manipulation"),
 
-  awful.key({ modkey , }           , "+"     , helpers.incmw       , "Increase number of columns")   ,
-  awful.key({ modkey , }           , "-"     , helpers.decmv       , "Decrease number of columns")   ,
+  awful.key({ modkey , }           , "+"     , helpers.incmw       , "Increase master size")   ,
+  awful.key({ modkey , }           , "-"     , helpers.decmv       , "Decrease master size")   ,
   awful.key({ modkey , }           , "space" , helpers.next_layout , "Next layout")                  ,
   awful.key({ modkey , "Shift"   } , "space" , helpers.prev_layout , "Previous layout")              ,
-
-  awful.key({ modkey , "Shift"   } , "h"     , 
-        function(c)
-              --local screen = awful.screen.focused()
-              awful.client.swap.global_bydirection('left')
-	      --print("form screen " .. screen)
-	      --print("on screen " .. awful.screen.focused())
-	      --print("c index " .. awful.client.focus)
-	      --print("client.swap.global_bydirection(left)")
-        end, "Swap with left window")        ,
-  awful.key({ modkey , "Shift"   } , "s"     , 
-        function(c)
-              awful.client.swap.global_bydirection('right')
-	      print("client.swap.global_bydirection(right)")
-        end, "Swap with left window"),
+  awful.key({ modkey , "Shift"   } , "h"     , helpers.swap_left   , "Swap with window above")       ,
+  awful.key({ modkey , "Shift"   } , "s"     , helpers.swap_right  , "Swap with window below")       ,
   awful.key({ modkey , "Shift"   } , "n"     , helpers.swap_up     , "Swap with window above")       ,
   awful.key({ modkey , "Shift"   } , "t"     , helpers.swap_down   , "Swap with window below")       ,
 
@@ -70,9 +57,9 @@ config.keys.global = awful.util.table.join(
   awful.key({ }, "#128", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/cycle-keymaps.sh") end),
   awful.key({ } , "XF86MonBrightnessUp"   , brightness.increase) ,
   awful.key({ } , "XF86MonBrightnessDown" , brightness.decrease) ,
-  awful.key({ } , "XF86AudioRaiseVolume"  , pulse.increase)   ,
-  awful.key({ } , "XF86AudioLowerVolume"  , pulse.decrease)   ,
-  awful.key({ } , "XF86AudioMute"         , pulse.mute)       ,
+  awful.key({ } , "XF86AudioRaiseVolume"  , pulse.increase)      ,
+  awful.key({ } , "XF86AudioLowerVolume"  , pulse.decrease)      ,
+  awful.key({ } , "XF86AudioMute"         , pulse.mute)          ,
   awful.key({ modkey,           }, "u",
     function () 
       sinks = {}
@@ -100,8 +87,6 @@ config.keys.client = awful.util.table.join(
   awful.key({ modkey , "Shift"}    , "c"      , helpers.close_window         , "Close")                     ,
   awful.key({ modkey , }           , "o"      , helpers.movetoscreen         , "Move to the other screen")  ,
   awful.key({ modkey , "Control" } , "space"  , awful.client.floating.toggle , "Toggle floating")           ,
-  -- TODO Irrelevant due to swap_directional?
-  awful.key({ modkey , "Control" } , "Return" , helpers.switch_with_master   , "Switch with master window")
 )
 
 keydoc.group("Misc")
