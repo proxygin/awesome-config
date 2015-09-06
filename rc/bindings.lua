@@ -86,7 +86,7 @@ config.keys.client = awful.util.table.join(
   awful.key({ modkey , }           , "f"      , helpers.fullscreen           , "Fullscreen")                ,
   awful.key({ modkey , "Shift"}    , "c"      , helpers.close_window         , "Close")                     ,
   awful.key({ modkey , }           , "o"      , helpers.movetoscreen         , "Move to the other screen")  ,
-  awful.key({ modkey , "Control" } , "space"  , awful.client.floating.toggle , "Toggle floating")           ,
+  awful.key({ modkey , "Control" } , "space"  , awful.client.floating.toggle , "Toggle floating")
 )
 
 keydoc.group("Misc")
