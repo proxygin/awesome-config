@@ -86,7 +86,6 @@ function update()
 
   local icon = icons.lookup({name = "audio-volume-" .. icon, type = "status"})
   _widget:set_image(icon)
-  --lastid = naughty.notify({ text = string.format("%d %%", percent),
   lastid = naughty.notify({ text = ("%d %%"):format(percent),
         icon = icon,
         font = "Ubuntu Bold 14",
@@ -118,7 +117,7 @@ function mute()
 end
 
 function mixer()
-  scratch.drop("pavucontrol", "top_workspace","right", 500, 650)
+  scratch.drop("pavucontrol", "top_workspace","right", 550, 650)
   --for k,i in pairs(screen[mouse.screen].geometry) do
   --	  print(k,i)
   --end

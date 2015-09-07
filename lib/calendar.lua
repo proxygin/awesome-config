@@ -14,15 +14,16 @@ local _widget = wibox.widget.textbox()
 local _comb_widget = wibox.layout.fixed.horizontal()
 local _widget_icon = wibox.widget.imagebox()
 
+_widget_icon:set_image(beautiful.icons .. "/widgets/myclocknew.png")
+_comb_widget:add(_widget_icon)
+_comb_widget:add(_widget)
+
 local strf = '<span font="' .. font .. '" color="#EEEEEE" background="#777E76">%b %d %H:%M</span>'
 vicious.register(_widget, vicious.widgets.date,
  strf,
   5 )
 
 function widget()
-  _widget_icon:set_image(beautiful.icons .. "/widgets/myclocknew.png")
-  _comb_widget:add(_widget_icon)
-  _comb_widget:add(_widget)
   _widget:buttons(awful.util.table.join(
     awful.button({ }, 1, notify)
   ))
