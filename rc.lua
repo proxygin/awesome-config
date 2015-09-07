@@ -4,7 +4,6 @@ awful.rules = require("awful.rules")
 beautiful   = require("beautiful")
 naughty     = require("naughty")
 gears       = require("gears")
---scratch     = require("scratch")
 
 -- Simple function to load additional LUA files.
 function loadrc(name, mod)

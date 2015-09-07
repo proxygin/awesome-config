@@ -1,14 +1,16 @@
-local awful    = require("awful")
+local awful     = require("awful")
 local beautiful = require("beautiful")
-local naughty  = require("naughty")
-local tonumber = tonumber
-local string   = string
-local config   = config
-local icons    = loadrc("icons", "proxygin/icons")
-local wibox    = require("wibox")
-local io       = require("io")
-local math     = require("math")
-local scratch  = require("scratch")
+local naughty   = require("naughty")
+local icons     = loadrc("icons", "proxygin/icons")
+local wibox     = require("wibox")
+local io        = require("io")
+local math      = require("math")
+local scratch   = require("scratch")
+local tonumber  = tonumber
+local print     = print
+local mouse     = mouse
+local screen    = screen
+local pairs     = pairs
 
 module("proxygin/pulse")
 
@@ -84,7 +86,8 @@ function update()
 
   local icon = icons.lookup({name = "audio-volume-" .. icon, type = "status"})
   _widget:set_image(icon)
-  lastid = naughty.notify({ text = string.format("%d %%", percent),
+  --lastid = naughty.notify({ text = string.format("%d %%", percent),
+  lastid = naughty.notify({ text = ("%d %%"):format(percent),
         icon = icon,
         font = "Ubuntu Bold 14",
         replaces_id = lastid }).id
@@ -115,7 +118,14 @@ function mute()
 end
 
 function mixer()
-  scratch.drop("pavucontrol", "top")
+  scratch.drop("pavucontrol", "top_workspace","right", 500, 650)
+  --for k,i in pairs(screen[mouse.screen].geometry) do
+  --	  print(k,i)
+  --end
+  --{ rule = { class = "XTerm" }, properties = {floating = true}, callback =
+  --function(c) c:geometry({x=0, y=0}) end},
+  --print( awful.util.spawn("pavucontrol"))
+  --print(c)
 end
 
 

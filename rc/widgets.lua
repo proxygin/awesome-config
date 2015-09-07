@@ -87,6 +87,11 @@ for s = 1, screen.count() do
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
+
+    --for k,i in pairs(mywibox[1]) do
+    --   print(k,i)
+    --end
+    --print(mywibox[s].geometry())
 end
 
 config.keys.global = awful.util.table.join(
