@@ -1,0 +1,1 @@
+dbus support for catching screen changes. At the least reset the wallpaper to fix the new setup.

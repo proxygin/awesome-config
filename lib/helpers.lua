@@ -1,12 +1,25 @@
 local screen = screen
 local client = client
+local mouse  = mouse
 local config = config
 local awful  = require("awful")
+local print  = print
 -- Error handling
 loadrc("errors")
 
 module("proxygin/helpers")
 
+
+-- Useful functions for writing lua extensions to awesome
+
+function print_screeninfo_under_mouse()
+  for k,i in pairs(screen[mouse.screen].geometry) do
+  	  print(k,i)
+  end
+  for k,i in pairs(screen[mouse.screen].workspace) do
+  	  print(k,i)
+  end
+end
 
 -- Focus helpers
 

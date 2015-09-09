@@ -85,7 +85,7 @@ function toggle(prog, vert, horiz, width, height, sticky, screen)
 
             if     vert == "bottom" then y = screengeom.height + screengeom.y - height
             elseif vert == "center" then y = screengeom.y+(screengeom.height-height)/2
-            elseif vert == "top_workspace" then y = screengeom.y - screengeom.y + 20
+            elseif vert == "top_workspace" then y = screengeom.y
             else   y =  screengeom.y - screengeom.y end
 
             -- Client properties

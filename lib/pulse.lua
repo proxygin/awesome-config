@@ -16,19 +16,11 @@ module("proxygin/pulse")
 
 local lastid  = nil
 local _widget = wibox.widget.imagebox()
-local _comb_widget = wibox.layout.fixed.horizontal()
-local _widget_icon = wibox.widget.imagebox()
 local inc = nil
 
 
 local function change_volume(arg) 
-  local f = io.popen("pacmd" .. " list-sinks") 
-  if f == nill then 
-    return false 
-  end 
-  
-  local list_sinks = f:read("*a") 
-  f:close() 
+  local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
   
   -- Break down volume into into %. inc = 1%
   if not inc then
@@ -58,13 +50,7 @@ local function change_volume(arg)
 end
 
 function update()
-  local f = io.popen("pacmd" .. " list-sinks") 
-  if f == nill then 
-    return false 
-  end 
-  
-  local list_sinks = f:read("*a") 
-  f:close() 
+  local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
   
   -- iter over sinks and set the volume 
   local sink_no = 0 
@@ -101,13 +87,7 @@ function decrease()
 end
 
 function mute()
-  local f = io.popen("pacmd" .. " list-sinks") 
-  if f == nill then 
-    return false 
-  end 
-  
-  local list_sinks = f:read("*a") 
-  f:close() 
+  local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
   
   local i = 0 
   for _ in list_sinks:gmatch("volume: front%-left: (%d+)") do 
@@ -117,19 +97,13 @@ function mute()
 end
 
 function mixer()
+  -- Make pavucontrol drop down from under the widget. top_workspace excludes
+  -- the top widget as display area
   scratch.drop("pavucontrol", "top_workspace","right", 550, 650)
-  --for k,i in pairs(screen[mouse.screen].geometry) do
-  --	  print(k,i)
-  --end
-  --{ rule = { class = "XTerm" }, properties = {floating = true}, callback =
-  --function(c) c:geometry({x=0, y=0}) end},
-  --print( awful.util.spawn("pavucontrol"))
-  --print(c)
 end
 
 
 function widget()
-  _widget_icon:set_image(beautiful.icons .. "/widgets/myclocknew.png")
   _widget:buttons(awful.util.table.join(
     awful.button({ }, 3, mixer),
     awful.button({ }, 1, mixer),
