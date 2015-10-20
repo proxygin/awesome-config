@@ -7,14 +7,17 @@ local icons   = loadrc("icons", "proxygin/icons")
 module("proxygin/memory")
 
 local _widget = wibox.widget.textbox()
+local widget_wrapper = wibox.widget.background()
+widget_wrapper:set_bg("#777E76")
+widget_wrapper:set_widget(_widget)
 local _comb_widget = wibox.layout.fixed.horizontal()
 local _widget_icon = wibox.widget.imagebox()
 _widget_icon:set_image(beautiful.icons .. "/widgets/mem.png")
 _comb_widget:add(_widget_icon)
-_comb_widget:add(_widget)
+_comb_widget:add(widget_wrapper)
 
 vicious.register(_widget, vicious.widgets.mem,
-  '<span background="#777E76" font="Inconsolata 13"> <span font="Inconsolata 13" color="#EEEEEE" background="#777E76">$2MB </span></span>',
+  '<span font="Inconsolata 13" color="#EEEEEE" background="#777E76">$2MB</span>',
   20 )
 
 function widget()
