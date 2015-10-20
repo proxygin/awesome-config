@@ -46,8 +46,6 @@ config.keys.global = awful.util.table.join(
   awful.key({ modkey,           }, "BackSpace", tools.browser),
 
   -- Multimedia keys
-  awful.key({ }, "#232", function () awful.util.spawn("setbrightness -") end),
-  awful.key({ }, "#233", function () awful.util.spawn("setbrightness +") end),
   awful.key({ }, "#237", function () awful.util.spawn("backlight -") end),
   awful.key({ }, "#238", function () awful.util.spawn("backlight +") end),
   awful.key({ }, "#212", function () awful.util.spawn(os.getenv("HOME") .. "/scritps/toggle-touchpad") end),

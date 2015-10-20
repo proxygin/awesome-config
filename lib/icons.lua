@@ -20,8 +20,8 @@ local types = {
   'status',
 }
 local formats = {
-  ".png",
-  ".xpm"
+    ".png",
+    ".xpm"
 }
 
 local assert = assert
