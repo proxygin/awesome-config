@@ -15,7 +15,10 @@ local pairs     = pairs
 module("proxygin/pulse")
 
 local lastid  = nil
-local _widget = wibox.widget.imagebox()
+local _widget = wibox.widget.background()
+_widget:set_bg(beautiful.bg_widget)
+local pulse_widget = wibox.widget.imagebox()
+_widget:set_widget(pulse_widget)
 local inc = nil
 
 
@@ -71,7 +74,7 @@ function update()
   end
 
   local icon = icons.lookup({name = "audio-volume-" .. icon, type = "status"})
-  _widget:set_image(icon)
+  pulse_widget:set_image(icon)
   lastid = naughty.notify({ text = ("%d %%"):format(percent),
         icon = icon,
         font = "Ubuntu Bold 14",
@@ -104,7 +107,7 @@ end
 
 
 function widget()
-  _widget:buttons(awful.util.table.join(
+  pulse_widget:buttons(awful.util.table.join(
     awful.button({ }, 3, mixer),
     awful.button({ }, 1, mixer),
     awful.button({ }, 4, increase),

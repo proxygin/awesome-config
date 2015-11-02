@@ -1,8 +1,9 @@
-local icons   = loadrc("icons", "proxygin/icons")
-local awful   = require("awful")
-local wibox   = require("wibox")
-local vicious = require("vicious")
-local naughty = require("naughty")
+local icons     = loadrc("icons", "proxygin/icons")
+local awful     = require("awful")
+local wibox     = require("wibox")
+local vicious   = require("vicious")
+local naughty   = require("naughty")
+local beautiful = require("beautiful")
 
 module("proxygin/battery")
 
@@ -13,7 +14,10 @@ local time    = nil
 local icon    = nil
 local title   = nil
 local lastid  = nil
-local _widget = wibox.widget.imagebox()
+local _widget = wibox.widget.background()
+_widget:set_bg(beautiful.bg_widget)
+local battery_widget = wibox.widget.imagebox()
+_widget:set_widget(battery_widget)
 
 local function get_icon()
   local charge = "100"
@@ -48,7 +52,7 @@ local function notify()
     replaces_id = lastid }).id
 end
 
-vicious.register(_widget, vicious.widgets.bat,
+vicious.register(battery_widget, vicious.widgets.bat,
   function(widget, args)
     state   = args[1]
     percent = args[2]
@@ -71,7 +75,7 @@ vicious.register(_widget, vicious.widgets.bat,
   60, battery)
 
 function widget()
-  _widget:buttons(awful.util.table.join(
+  battery_widget:buttons(awful.util.table.join(
     awful.button({ }, 1, notify)
   ))
   return _widget

@@ -9,7 +9,8 @@ theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
 theme.bg_urgent     = "#b94a48"
 theme.bg_minimize   = "#444444"
-theme.bg_systray    = theme.bg_normal
+theme.bg_widget     = "#777E76"
+theme.bg_systray    = theme.bg_widget
 
 theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#cccccc"
@@ -20,6 +21,7 @@ theme.border_width  = 1
 theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
+
 
 -- Widgets
 --theme.bg_widget = "#cc0000"

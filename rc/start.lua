@@ -25,4 +25,5 @@ os.execute(table.concat(execute, ";"))
 -- Spawn various X programs
 --xrun("polkit-gnome-authentication-agent-1",
 --     "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1")
-xrun("Commman Applet", "connman-ui-gtk")
+--xrun("Commman Applet", "connman-ui-gtk")
+xrun("Network Applet", "nm-applet")

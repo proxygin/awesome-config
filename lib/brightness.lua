@@ -1,12 +1,13 @@
 -- Handle brightness (with xbacklight)
 
-local awful    = require("awful")
-local naughty  = require("naughty")
-local tonumber = tonumber
-local string   = string
-local icons    = loadrc("icons", "proxygin/icons")
-local io       = require("io")
-local math     = require("math")
+local awful     = require("awful")
+local naughty   = require("naughty")
+local tonumber  = tonumber
+local string    = string
+local icons     = loadrc("icons", "proxygin/icons")
+local io        = require("io")
+local math      = require("math")
+local beautiful = require("beautiful")
 
 module("proxygin/brightness")
 
@@ -16,10 +17,10 @@ local MAX_BRIGHTNESS    = tonumber(awful.util.pread("cat " .. BRIGHTNESS_MODULE 
 local nid = nil
 
 local function notify(value)
-  local icon = icons.lookup({name = "display-brightness-symbolic", type = "status"})
+  local icon = beautiful.icons .. "/widgets/display-brightness-symbolic.png"
   nid = naughty.notify({ text = string.format("%.0f %%", value),
       icon = icon,
-      font = "Ubuntu Bold 24",
+      font = "Ubuntu Bold 14",
       replaces_id = nid }).id
 end
 

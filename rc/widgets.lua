@@ -15,6 +15,8 @@ sepclose:set_image(beautiful.icons .. "/widgets/right.png")
 local spacer = wibox.widget.imagebox()
 spacer:set_image(beautiful.icons .. "/widgets/spacer.png")
 local spacer2 = wibox.widget.textbox(" | ")
+local spacer_arrow0 = wibox.widget.imagebox()
+spacer_arrow0:set_image(beautiful.icons .. "/widgets/arrow1.png")
 
 
 -- Create a wibox for each screen and add it
@@ -29,6 +31,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                         })
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
+
 mytaglist.buttons = awful.util.table.join(
                       awful.button({ }        , 1 , awful.tag.viewonly)     ,
                       awful.button({ modkey } , 1 , awful.client.movetotag) ,
@@ -73,6 +76,7 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(spacer_arrow0)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(pulse.widget())
     right_layout:add(battery.widget())
