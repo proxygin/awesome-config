@@ -49,7 +49,7 @@ config.terminal  = "urxvt"
 config.term_cmd  = config.terminal .. " -e "
 config.hostname  = awful.util.pread('uname -n'):gsub('\n', '')
 config.editor    = os.getenv("EDITOR") or "vim"
-config.browser   = os.getenv("BROWSER") or "chromium"
+config.browser   = os.getenv("BROWSER") or "firefox"
 config.layouts   = {
   awful.layout.suit.tile,        -- 1
   awful.layout.suit.fair,        -- 2
