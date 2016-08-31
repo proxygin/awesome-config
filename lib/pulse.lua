@@ -34,8 +34,12 @@ local function change_volume(arg)
   end
   
   -- iter over sinks and set the volume 
-  local sink_no = 0 
+  -- We need to interate over two values. The sink index and sink volume. Use
+  -- a for-loop to loop over the volumeds, and the iterator index_iterator()
+  -- to increment the index manually in each loop iteration.
   local percent = 0
+  local index_iterator = list_sinks:gmatch("index: (%d)",1)
+
   for vol in list_sinks:gmatch("volume: front%-left: (%d+)") do 
     vol = tonumber(vol) + (inc*arg)
     if vol < 0 then
@@ -43,10 +47,10 @@ local function change_volume(arg)
     end
        
     percent = math.floor(vol/inc)
+    sink_no = index_iterator()
 
     local f = io.popen("pacmd set-sink-volume  " .. sink_no .. " " .. vol )
     local f = io.popen("pacmd set-sink-mute " .. sink_no .. " false")
-    sink_no = sink_no + 1 
   end 
 
   update()
@@ -56,7 +60,7 @@ function update()
   local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
   
   -- iter over sinks and set the volume 
-  local sink_no = 0 
+  local sink_no = 1 
   local percent = 0
   for default_sink_prop in list_sinks:gmatch("%* index: %d.*",1) do 
     for default_percent in default_sink_prop:gmatch("volume: front%-left: %d+ / +(%d+)") do 
