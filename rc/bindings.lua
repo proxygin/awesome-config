@@ -40,31 +40,35 @@ config.keys.global = awful.util.table.join(
 
   keydoc.group("Misc"),
 
-  awful.key({                   }, "Print", tools.screenshot),
-  awful.key({ modkey, "Control" }, "l", tools.lock_screen),
+  awful.key({                   }, "Print", tools.screenshot, "Take screenshot"),
+  --awful.key({ modkey, "Shift"   }, "3", tools.screenshot, "Take screenshot (Mac shortcut)"),
+  awful.key({ modkey, "Control" }, "l", tools.lock_screen, "Lock screen"),
   awful.key({ modkey,           }, "Return", tools.terminal, "Spawn a terminal"), 
-  awful.key({ modkey,           }, "BackSpace", tools.browser),
+  awful.key({ modkey,           }, "BackSpace", tools.browser, "Browser"),
 
   -- Multimedia keys
-  awful.key({ }, "#237", function () awful.util.spawn("backlight -") end),
-  awful.key({ }, "#238", function () awful.util.spawn("backlight +") end),
-  awful.key({ }, "#212", function () awful.util.spawn(os.getenv("HOME") .. "/scritps/toggle-touchpad") end),
+  awful.key({ }, "#237", function () awful.util.spawn("kbdlight down 25") end, "Keyboard backlgiht down"),
+  awful.key({ }, "#238", function () awful.util.spawn("kbdlight up 25") end, "Keyboard backlgiht up"),
+  awful.key({ }, "#212", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/toggle-touchpad") end),
   awful.key({ }, "#173", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/spotify-control.sh previous") end),
   awful.key({ }, "#171", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/spotify-control.sh next") end),
   awful.key({ }, "#172", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/spotify-control.sh pause_play") end),
   awful.key({ }, "#128", function () awful.util.spawn(os.getenv("HOME") .. "/scripts/cycle-keymaps.sh") end),
-  awful.key({ } , "XF86MonBrightnessUp"   , brightness.increase) ,
-  awful.key({ } , "XF86MonBrightnessDown" , brightness.decrease) ,
+  --awful.key({ } , "XF86MonBrightnessUp"   , brightness.increase) ,
+  --awful.key({ } , "XF86MonBrightnessDown" , brightness.decrease) ,
+  awful.key({ } , "XF86MonBrightnessUp"   , function () awful.util.spawn("xbacklight -inc 20") end),
+  awful.key({ } , "XF86MonBrightnessDown" , function () awful.util.spawn("xbacklight -dec 20") end),
   awful.key({ } , "XF86AudioRaiseVolume"  , pulse.increase)      ,
   awful.key({ } , "XF86AudioLowerVolume"  , pulse.decrease)      ,
   awful.key({ } , "XF86AudioMute"         , pulse.mute)          ,
+  awful.key({ modkey, }, "XF86PowerOff"  , function () awful.util.spawn_with_shell("systemctl suspend") end),
   awful.key({ modkey,           }, "u",
     function () 
       sinks = {}
-      for line in string.gmatch(awful.util.pread("paselector list"), "[^\n]+") do
+      for line in string.gmatch(awful.util.pread(os.getenv("HOME") .. "/scripts/pulseaudio-glue/paselector.sh list"), "[^\n]+") do
               local sink_no   = line:sub(0,string.find(line,"\t"))
               local sink_desc = line:sub(string.find(line,"\t")+1,line:len())
-              table.insert(sinks, { sink_desc, function() awful.util.spawn_with_shell("paselector move " .. sink_no ) end})
+              table.insert(sinks, { sink_desc, function() awful.util.spawn_with_shell(os.getenv("HOME") .. "/scripts/pulseaudio-glue/paselector.sh move " .. sink_no ) end})
       end
       
       mypaselector = awful.menu.new( { items = sinks, theme = { width = 300, } } )

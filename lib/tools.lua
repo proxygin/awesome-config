@@ -4,7 +4,7 @@ local awful  = require("awful")
 module("proxygin/tools")
 
 function screenshot()
-  awful.util.spawn("screenshot", false)
+  awful.util.spawn("gnome-screenshot -i", false)
 end
 
 function lock_screen()

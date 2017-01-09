@@ -4,7 +4,8 @@ loadrc("xrun", "proxygin/xrun")
 -- Start idempotent commands
 local execute = {
    -- Start PulseAudio
-   "pulseaudio --check || pulseaudio -D",
+   --"pulseaudio --check || pulseaudio -D", Pulseaudio should start by itself
+   --under systemd
    "setxkbmap custom-dvorak",
    "xset -b",	-- Disable bell
    -- Default browser
@@ -14,7 +15,7 @@ local execute = {
       "text/html",
    -- Default MIME types
    "xdg-mime default evince.desktop application/pdf",
-   --"xdg-mime default gpicview.desktop image/png image/x-apple-ios-png image/jpeg image/jpg image/gif",
+   "xdg-mime default gpicview.desktop image/png image/x-apple-ios-png image/jpeg image/jpg image/gif",
    -- dbus-mediakeys
    --"dbus-mediakeys &"
    "xrdb -merge " .. os.getenv("HOME") .. "/.Xresources",
@@ -25,5 +26,4 @@ os.execute(table.concat(execute, ";"))
 -- Spawn various X programs
 --xrun("polkit-gnome-authentication-agent-1",
 --     "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1")
---xrun("Commman Applet", "connman-ui-gtk")
-xrun("Network Applet", "nm-applet")
+xrun("NetworkManager Applet", "nm-applet 2> /dev/null")
