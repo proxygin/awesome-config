@@ -6,7 +6,7 @@ filestructure and setup is borrowed from [Vincent Bernat's awesome
 config](https://github.com/vincentbernat/awesome-configuration)
 but converted from awesome 3.4 to 3.5.
 
-I like directions. The the main diviation from the default keybindings is in
+I like directions. The the main deviation from the default keybindings is in
 regards to using directional client focus, client swap and screen switch.
 Oh. I also use Dvorak as my keybord layout, so any use of 'hjkl' is replaced by
 the Dvorak home row.
