@@ -51,11 +51,10 @@ config.hostname  = awful.util.pread('uname -n'):gsub('\n', '')
 config.editor    = os.getenv("EDITOR") or "vim"
 config.browser   = os.getenv("BROWSER") or "firefox"
 config.layouts   = {
-  awful.layout.suit.tile,        -- 1
-  awful.layout.suit.fair,        -- 2
-  awful.layout.suit.max,         -- 3
-  awful.layout.suit.magnifier,   -- 4
-  awful.layout.suit.floating     -- 5
+  awful.layout.suit.tile,             -- 1
+  awful.layout.suit.fair,             -- 2
+  awful.layout.suit.fair.horizontal,  -- 3
+  awful.layout.suit.floating          -- 4
 }
 
 loadrc("appearance")
