@@ -56,7 +56,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -80,28 +80,27 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
-    -- Widgets that are aligned to the left
-    local left_layout = wibox.layout.fixed.horizontal()
-    left_layout:add(s.mytaglist)
-    left_layout:add(s.mypromptbox)
-
-    -- Widgets that are aligned to the right
-    local right_layout = wibox.layout.fixed.horizontal()
-    right_layout:add(spacer_arrow0)
-    right_layout:add(wibox.widget.systray())
-    right_layout:add(pulse.widget())
-    right_layout:add(battery.widget())
-    right_layout:add(memory.widget())
-    right_layout:add(clock.widget())
-    right_layout:add(s.mylayoutbox)
-
-    -- Now bring it all together (with the tasklist in the middle)
-    local layout = wibox.layout.align.horizontal()
-    layout:set_left(left_layout)
-    layout:set_middle(s.mytasklist)
-    layout:set_right(right_layout)
-
-    s.mywibox:set_widget(layout)
+    -- Add widgets to the wibox
+    s.mywibox:setup {
+        layout = wibox.layout.align.horizontal,
+        { -- Left widgets
+            layout = wibox.layout.fixed.horizontal,
+            mylauncher,
+            s.mytaglist,
+            s.mypromptbox,
+        },
+        s.mytasklist, -- Middle widget
+        { -- Right widgets
+            layout = wibox.layout.fixed.horizontal,
+            spacer_arrow0,
+            wibox.widget.systray(),
+            pulse.widget(),
+            battery.widget(),
+            memory.widget(),
+            clock.widget(),
+            s.mylayoutbox,
+        },
+    }
 end)
 
 config.keys.global = awful.util.table.join(
