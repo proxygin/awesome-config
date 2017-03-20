@@ -5,7 +5,10 @@ awful.rules.rules = {
                      border_color = beautiful.border_normal,
                      focus = true,
                      keys = config.keys.client,
-                     buttons = config.mouse.client } },
+                     buttons = config.mouse.client,
+                     screen = awful.screen.preferred,
+                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
+                   } },
     --{ rule = { class = "Pavucontrol" },
     --  properties = { floating = true,
     --  		     border_width = 0,
@@ -31,6 +34,9 @@ awful.rules.rules = {
                      opacity = 0.9 } },
     { rule = { class = "pinentry" },
       properties = { floating = true } },
+    { rule = { class = "Arandr"  },
+      properties = { floating = true },
+      callback = function (c) awful.placement.centered(c,nil) end },
     -- Set Firefox to always map on tags number 2 of screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { tag = tags[1][2] } },

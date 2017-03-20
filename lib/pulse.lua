@@ -15,7 +15,7 @@ local pairs     = pairs
 module("proxygin/pulse")
 
 local lastid  = nil
-local _widget = wibox.widget.background()
+local _widget = wibox.container.background()
 _widget:set_bg(beautiful.bg_widget)
 local pulse_widget = wibox.widget.imagebox()
 _widget:set_widget(pulse_widget)
@@ -23,7 +23,7 @@ local inc = nil
 
 
 local function change_volume(arg) 
-  local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
+  local list_sinks = io.popen("pacmd" .. " list-sinks"):read('*a')
   
   -- Break down volume into into %. inc = 1%
   if not inc then
@@ -49,15 +49,15 @@ local function change_volume(arg)
     percent = math.floor(vol/inc)
     sink_no = index_iterator()
 
-    local f = io.popen("pacmd set-sink-volume  " .. sink_no .. " " .. vol )
-    local f = io.popen("pacmd set-sink-mute " .. sink_no .. " false")
+    local f = io.popen("pacmd set-sink-volume  " .. sink_no .. " " .. vol ):read('*a')
+    local f = io.popen("pacmd set-sink-mute " .. sink_no .. " false"):read('*a')
   end 
 
   update()
 end
 
 function update()
-  local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
+  local list_sinks = io.popen("pacmd" .. " list-sinks"):read('a*')
   
   -- iter over sinks and set the volume 
   local sink_no = 1 
@@ -94,11 +94,11 @@ function decrease()
 end
 
 function mute()
-  local list_sinks = awful.util.pread("pacmd" .. " list-sinks")
+  local list_sinks = io.popen("pacmd" .. " list-sinks"):read('*a')
   
   local i = 0 
   for _ in list_sinks:gmatch("volume: front%-left: (%d+)") do 
-    local f = io.popen("pacmd set-sink-mute " .. i .. " true")
+    local f = io.popen("pacmd set-sink-mute " .. i .. " true"):read('*a')
     i = i + 1 
   end 
 end

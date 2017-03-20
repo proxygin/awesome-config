@@ -2,10 +2,10 @@
 
 local xrun_now = function(name, cmd)
   local basename = cmd:gsub("(S*) .*","%1")
-  local count = tonumber(awful.util.pread("pgrep -x -c " .. cmd))
+  local count = tonumber(io.popen("pgrep -x -c " .. cmd):read('*a'))
   if count == 0 then
     print("Starting " .. basename .. " via '" .. cmd .. "'.")
-    awful.util.spawn(cmd or name, false)
+    awful.spawn(cmd or name, false)
   else
     print("Not starting " .. basename .. ". Already running.")
   end

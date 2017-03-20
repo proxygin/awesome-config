@@ -7,7 +7,7 @@ local icons   = loadrc("icons", "proxygin/icons")
 module("proxygin/memory")
 
 local _widget = wibox.widget.textbox()
-local widget_wrapper = wibox.widget.background()
+local widget_wrapper = wibox.container.background()
 widget_wrapper:set_bg(beautiful.bg_widget)
 widget_wrapper:set_widget(_widget)
 local _comb_widget = wibox.layout.fixed.horizontal()

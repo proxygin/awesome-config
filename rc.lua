@@ -4,6 +4,7 @@ awful.rules = require("awful.rules")
 beautiful   = require("beautiful")
 naughty     = require("naughty")
 gears       = require("gears")
+io          = require("io")
 
 -- Simple function to load additional LUA files.
 function loadrc(name, mod)
@@ -47,7 +48,7 @@ config.keys = {}
 config.mouse = {}
 config.terminal  = "termite"
 config.term_cmd  = config.terminal .. " -e "
-config.hostname  = awful.util.pread('uname -n'):gsub('\n', '')
+config.hostname  = io.popen('uname -n'):read('*a'):gsub('\n', '')
 config.editor    = os.getenv("EDITOR") or "vim"
 config.browser   = os.getenv("BROWSER") or "firefox"
 config.layouts   = {

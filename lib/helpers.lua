@@ -163,8 +163,8 @@ function toggle_window(c)
     -- Without this, the following
     -- :isvisible() makes no sense
     c.minimized = false
-    if not c:isvisible() then
-      awful.tag.viewonly(c:tags()[1])
+    if not c:isvisible() and c.first_tag then
+      c.first_tag:view_only()
     end
     -- This will also un-minimize
     -- the client, if needed

@@ -14,7 +14,7 @@ local time    = nil
 local icon    = nil
 local title   = nil
 local lastid  = nil
-local _widget = wibox.widget.background()
+local _widget = wibox.container.background()
 _widget:set_bg(beautiful.bg_widget)
 local battery_widget = wibox.widget.imagebox()
 _widget:set_widget(battery_widget)

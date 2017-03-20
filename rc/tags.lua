@@ -1,11 +1,9 @@
 local layouts = config.layouts
 local keydoc  = loadrc("keydoc", "proxygin/keydoc")
 
-tags = {}
-for s = 1, screen.count() do
-   -- Each screen has its own tag table.
-  tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9}, s, layouts[1])
-end
+awful.screen.connect_for_each_screen(function(s)
+    -- Wallpaper
+    set_wallpaper(s)
 
 
 root.buttons(awful.util.table.join(
@@ -16,10 +14,10 @@ root.buttons(awful.util.table.join(
 config.keys.global = awful.util.table.join(
   config.keys.global,
   keydoc.group("Tag management"),
-  awful.key({ modkey, }, "Left"      , awful.tag.viewprev ),
-  awful.key({ modkey, }, "Right"     , awful.tag.viewnext ),
-  awful.key({ modkey, "Ctrl" }, "t"  , awful.tag.viewprev ),
-  awful.key({ modkey, "Ctrl" }, "n"  , awful.tag.viewnext ),
+  awful.key({ modkey, }, "Left"      , function() awful.tag.viewprev() end ),
+  awful.key({ modkey, }, "Right"     , function() awful.tag.viewnext() end ),
+  awful.key({ modkey, "Ctrl" }, "t"  , function() awful.tag.viewprev() end ),
+  awful.key({ modkey, "Ctrl" }, "n"  , function() awful.tag.viewnext() end ),
   awful.key({ modkey, }, "Escape"    , awful.tag.history.restore, "Switch to previous tag")
 )
 
@@ -29,17 +27,17 @@ for i = 1, 9 do
     keydoc.group("Tag management"),
     awful.key({ modkey }, i,
       function ()
-        local screen = mouse.screen
-        local tag = awful.tag.gettags(screen)[i]
+        local screen = awful.screen.focused()
+        local tag = screen.tags[i]
         if tag then
-          awful.tag.viewonly(tag)
+          tag:view_only()
         end
       end, i == 1 and "Display only this tag" or nil),
 
     awful.key({ modkey, "Control" }, i,
       function ()
-        local screen = mouse.screen
-        local tag = awful.tag.gettags(screen)[i]
+        local screen = awful.screen.focused()
+        local tag = screen.tags[i]
         if tag then
           awful.tag.viewtoggle(tag)
         end
@@ -47,22 +45,24 @@ for i = 1, 9 do
 
     awful.key({ modkey, "Shift" }, i,
       function ()
-	if not client.focus then
-		return
-	end
-        local tag = awful.tag.gettags(client.focus.screen)[i]
-        if client.focus and tag then
-          awful.client.movetotag(tag)
+        if client.focus then
+          local tag = client.focus.screen.tags[i]
+          if tag then
+            client.focus:move_to_tag(tag)
+          end
         end
       end, i == 1 and "Move window to this tag" or nil),
 
     awful.key({ modkey, "Control", "Shift" }, i,
       function ()
-        local tag = awful.tag.gettags(client.focus.screen)[i]
+        local tag = client.focus.screen.tags[i]
         if client.focus and tag then
-          awful.client.toggletag(tag)
+            if client.focus then
+              client.focus:toggle_tag(t)
+            end
         end
       end, i == 1 and "Toggle this tag on this window" or nil),
     keydoc.group("Misc")
   )
 end
+end )

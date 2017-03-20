@@ -12,8 +12,8 @@ local beautiful = require("beautiful")
 module("proxygin/brightness")
 
 -- Assume we have one and only one monitor with controllable brightness
-local BRIGHTNESS_MODULE = awful.util.pread("find -L /sys/class/backlight/ -mindepth 1 -maxdepth 1 2> /dev/null | head -n 1 | tr -d '\n'")
-local MAX_BRIGHTNESS    = tonumber(awful.util.pread("cat " .. BRIGHTNESS_MODULE .. "/max_brightness"))
+local BRIGHTNESS_MODULE = io.popen("find -L /sys/class/backlight/ -mindepth 1 -maxdepth 1 2> /dev/null | head -n 1 | tr -d '\n'"):read('*a')
+local MAX_BRIGHTNESS    = tonumber(io.popen("cat " .. BRIGHTNESS_MODULE .. "/max_brightness"):read('*a'))
 local nid = nil
 
 local function notify(value)
@@ -39,7 +39,7 @@ local function change(inc)
   brightness = math.min(brightness,MAX_BRIGHTNESS)
   brightness = math.max(brightness,0)
 
-  awful.util.pread("echo " .. brightness ..  " > " .. BRIGHTNESS_MODULE .. "/brightness")
+  io.popen("echo " .. brightness ..  " > " .. BRIGHTNESS_MODULE .. "/brightness"):read('*a')
 
   notify( (brightness/MAX_BRIGHTNESS) * 100)
 end

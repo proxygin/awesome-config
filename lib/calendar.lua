@@ -13,7 +13,7 @@ clockicon = wibox.widget.imagebox()
 clockicon:set_image(beautiful.clock)
 
 local datewidget_text = wibox.widget.textbox()
-local datewidget_wrapper = wibox.widget.background()
+local datewidget_wrapper = wibox.container.background()
 datewidget_wrapper:set_widget(datewidget_text)
 datewidget_wrapper:set_bg(beautiful.bg_widget)
 local _comb_widget = wibox.layout.fixed.horizontal()

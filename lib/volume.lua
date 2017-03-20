@@ -16,7 +16,7 @@ local channel = "Master"
 local _widget = wibox.widget.imagebox()
 
 local function pulse(args)
-  local f = io.popen("pacmd" .. " list-sinks")
+  local f = io.popen("pacmd" .. " list-sinks"):read('a*')
   if f  == nill then
     return false
   end
@@ -32,7 +32,7 @@ local function pulse(args)
   --vol = tonumber(vol) + ((65537/100)*5)
   for i = 0, count-1 do
     -- apply 'whatever' to each index
-    local f = io.popen("pacmd set-sink-volume "  .. i .. " " .. 14418)
+    local f = io.popen("pacmd set-sink-volume "  .. i .. " " .. 14418):read('a*')
     if f  == nill then
       lastid = naughty.notify({ text = "det gik galt...",
       icon = icon,
@@ -50,7 +50,7 @@ local function pulse(args)
 end
 
 local function amixer(args)
-  local out = awful.util.pread("amixer " .. args)
+  local out = io.popen("amixer " .. args):read('*a')
   local vol, mute = out:match("([%d]+)%%.*%[([%l]*)")
   if not mute or not vol then return end
 
@@ -73,16 +73,16 @@ local function amixer(args)
 end
 
 function increase()
-  --awful.util.spawn("pavol +")
+  --awful.spawn("pavol +")
   pulse("test")
 end
 
 function decrease()
-  awful.util.spawn("pavol -")
+  awful.spawn("pavol -")
 end
 
 function toggle()
-  awful.util.spawn("pavol mute")
+  awful.spawn("pavol mute")
 end
 
 function update()
@@ -90,7 +90,7 @@ function update()
 end
 
 function mixer()
-  awful.util.spawn(config.term_cmd .. "alsamixer", false)
+  awful.spawn(config.term_cmd .. "alsamixer", false)
 end
 
 function widget()
