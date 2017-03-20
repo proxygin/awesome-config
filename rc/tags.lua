@@ -5,12 +5,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
 
-
-root.buttons(awful.util.table.join(
-  awful.button({ }, 4, awful.tag.viewnext),
-  awful.button({ }, 5, awful.tag.viewprev)
-))
-
 config.keys.global = awful.util.table.join(
   config.keys.global,
   keydoc.group("Tag management"),
