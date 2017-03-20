@@ -69,7 +69,7 @@ config.keys.global = awful.util.table.join(
       for line in string.gmatch(io.popen(os.getenv("HOME") .. "/scripts/pulseaudio-glue/paselector.sh list"):read('a*'), "[^\n]+") do
               local sink_no   = line:sub(0,string.find(line,"\t"))
               local sink_desc = line:sub(string.find(line,"\t")+1,line:len())
-              table.insert(sinks, { sink_desc, function() awful.spawn_with_shell(os.getenv("HOME") .. "/scripts/pulseaudio-glue/paselector.sh move " .. sink_no ) end})
+              table.insert(sinks, { sink_desc, function() io.popen(os.getenv("HOME") .. "/scripts/pulseaudio-glue/paselector.sh move " .. sink_no ):read('a*') end})
       end
       
       mypaselector = awful.menu.new( { items = sinks, theme = { width = 300, } } )
@@ -80,7 +80,7 @@ config.keys.global = awful.util.table.join(
   awful.key({ modkey, }, "F1", keydoc.display),
   --
   -- Use scratchdrop to emulate game-console
-  awful.key({ modkey }, "|", function () scratch.drop("urxvtcd", "top") end)
+  awful.key({ modkey }, "|", function () scratch.drop("termite", "top") end)
 
 )
 
