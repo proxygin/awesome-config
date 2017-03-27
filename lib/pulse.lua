@@ -57,7 +57,7 @@ local function change_volume(arg)
 end
 
 function update()
-  local list_sinks = io.popen("pacmd" .. " list-sinks"):read('a*')
+  local list_sinks = io.popen("pacmd list-sinks"):read('a*')
   
   -- iter over sinks and set the volume 
   local sink_no = 1 
@@ -93,8 +93,13 @@ function decrease()
   change_volume(-5)
 end
 
+function sink_list()
+  local list_sinks = io.popen("pacmd list-sinks"):read('*a')
+  return list_sinks:gmatch("volume: front%-left: (%d+)")
+end
+
 function mute()
-  local list_sinks = io.popen("pacmd" .. " list-sinks"):read('*a')
+  local list_sinks = io.popen("pacmd list-sinks"):read('*a')
   
   local i = 0 
   for _ in list_sinks:gmatch("volume: front%-left: (%d+)") do 
