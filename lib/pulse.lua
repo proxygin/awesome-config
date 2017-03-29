@@ -8,67 +8,39 @@ local math      = require("math")
 local scratch   = require("scratch")
 local tonumber  = tonumber
 local print     = print
-local mouse     = mouse
-local screen    = screen
 local pairs     = pairs
 
 module("proxygin/pulse")
 
 local lastid  = nil
-local _widget = wibox.container.background()
-_widget:set_bg(beautiful.bg_widget)
 local pulse_widget = wibox.widget.imagebox()
-_widget:set_widget(pulse_widget)
-local inc = nil
+
+
+-- Break down volume into into %. inc = 1%
+local inc = math.floor((tonumber(io.popen("pacmd" .. " list-sinks"):read('*a'):gmatch("volume steps: (%d+)",1)())/100))
+
+function sinks()
+  return io.popen("pacmd list-sinks"):read('*a'):gmatch("index: (%d)")
+end
 
 
 local function change_volume(arg) 
-  local list_sinks = io.popen("pacmd" .. " list-sinks"):read('*a')
-  
-  -- Break down volume into into %. inc = 1%
-  if not inc then
-    for i in list_sinks:gmatch("volume steps: (%d+)",1) do
-    	inc = math.floor((tonumber(i)/100))
-	break
-    end
-  end
-  
-  -- iter over sinks and set the volume 
-  -- We need to interate over two values. The sink index and sink volume. Use
-  -- a for-loop to loop over the volumeds, and the iterator index_iterator()
-  -- to increment the index manually in each loop iteration.
-  local percent = 0
-  local index_iterator = list_sinks:gmatch("index: (%d)",1)
-
-  for vol in list_sinks:gmatch("volume: front%-left: (%d+)") do 
-    vol = tonumber(vol) + (inc*arg)
+  for sink,vol in io.popen("pacmd" .. " list-sinks"):read('*a'):gmatch("index: (%d)[^/]+front%-left: (%d+)[^/]+/") do
+    local vol = tonumber(vol) + (inc*arg)
     if vol < 0 then
       vol = 0
     end
-       
-    percent = math.floor(vol/inc)
-    sink_no = index_iterator()
 
-    local f = io.popen("pacmd set-sink-volume  " .. sink_no .. " " .. vol ):read('*a')
-    local f = io.popen("pacmd set-sink-mute " .. sink_no .. " false"):read('*a')
+    local f = io.popen("pacmd set-sink-volume " .. sink .. " " .. vol ):read('*a')
+    local f = io.popen("pacmd set-sink-mute "   .. sink ..    " false"):read('*a')
   end 
 
   update()
 end
 
 function update()
-  local list_sinks = io.popen("pacmd list-sinks"):read('a*')
-  
-  -- iter over sinks and set the volume 
-  local sink_no = 1 
-  local percent = 0
-  for default_sink_prop in list_sinks:gmatch("%* index: %d.*",1) do 
-    for default_percent in default_sink_prop:gmatch("volume: front%-left: %d+ / +(%d+)") do 
-      percent  = tonumber(default_percent)
-      break
-    end
-    break
-  end 
+  -- Match default sink from the * and extract % volume 
+  local percent = tonumber(io.popen("pacmd list-sinks"):read('a*'):gmatch("%* index: %d[^/]+/ +(%d+)",1)())
 
   local icon = "high"
   if percent < 30 then
@@ -93,19 +65,17 @@ function decrease()
   change_volume(-5)
 end
 
-function sink_list()
-  local list_sinks = io.popen("pacmd list-sinks"):read('*a')
-  return list_sinks:gmatch("volume: front%-left: (%d+)")
-end
-
 function mute()
-  local list_sinks = io.popen("pacmd list-sinks"):read('*a')
-  
-  local i = 0 
-  for _ in list_sinks:gmatch("volume: front%-left: (%d+)") do 
+  for i in sinks() do
+    print(i)
     local f = io.popen("pacmd set-sink-mute " .. i .. " true"):read('*a')
-    i = i + 1 
   end 
+  local icon = icons.lookup({name = "audio-volume-muted", type = "status"})
+  pulse_widget:set_image(icon)
+  lastid = naughty.notify({ text = "muted",
+        icon = icon,
+        font = "Ubuntu Bold 12",
+        replaces_id = lastid }).id
 end
 
 function mixer()
@@ -123,5 +93,5 @@ function widget()
     awful.button({ }, 5, decrease)
   ))
   update()
-  return _widget
+  return pulse_widget
 end

@@ -28,6 +28,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
+mykeyboardlayout = awful.widget.keyboardlayout()
+
 local taglist_buttons = awful.util.table.join(
                       awful.button({ }, 1, function(t) t:view_only() end),
                       awful.button({ modkey }, 1, function(t)
@@ -94,8 +96,13 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             spacer_arrow0,
             wibox.widget.systray(),
-            pulse.widget(),
+            {
+              pulse.widget(),
+              bg = beautiful.bg_widget,
+              widget = wibox.container.background,
+            },
             battery.widget(),
+            mykeyboardlayout,
             memory.widget(),
             clock.widget(),
             s.mylayoutbox,
